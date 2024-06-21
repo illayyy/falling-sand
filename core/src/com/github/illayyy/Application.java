@@ -26,8 +26,14 @@ public class Application extends ApplicationAdapter {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean touchDragged(int screenX, int screenY, int pointer) {
-                Vector3 coords = camera.unproject(new Vector3(screenX, screenY, 0));
-                world.setCell((int) coords.x, (int) coords.y, 1);
+                draw(screenX, screenY);
+
+                return true;
+            }
+
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                draw(screenX, screenY);
 
                 return true;
             }
@@ -58,5 +64,10 @@ public class Application extends ApplicationAdapter {
     @Override
     public void dispose() {
         shapeRenderer.dispose();
+    }
+
+    private void draw(int x, int y) {
+        Vector3 coords = camera.unproject(new Vector3(x, y, 0));
+        world.setCell((int) coords.x, (int) coords.y, 1);
     }
 }
