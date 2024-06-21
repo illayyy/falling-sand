@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.github.illayyy.material.Material;
+import com.github.illayyy.material.Sand;
 
 public class Application extends ApplicationAdapter {
     private static final int WORLD_WIDTH = 50;
@@ -42,7 +44,7 @@ public class Application extends ApplicationAdapter {
 
     @Override
     public void render() {
-        int[][] matrix = world.getMatrix();
+        Material[][] matrix = world.getMatrix();
 
         camera.update();
         ScreenUtils.clear(Color.BLACK);
@@ -51,9 +53,9 @@ public class Application extends ApplicationAdapter {
 
         for (int y = 0; y < WORLD_HEIGHT; y++) {
             for (int x = 0; x < WORLD_WIDTH; x++) {
-                if (matrix[y][x] == 1) {
-                    shapeRenderer.rect(x, y, 1, 1);
-                }
+                Material material = matrix[y][x];
+                shapeRenderer.setColor(material.getColor());
+                shapeRenderer.rect(x, y, 1, 1);
             }
         }
 
@@ -68,6 +70,6 @@ public class Application extends ApplicationAdapter {
 
     private void draw(int x, int y) {
         Vector3 coords = camera.unproject(new Vector3(x, y, 0));
-        world.setCell((int) coords.x, (int) coords.y, 1);
+        world.setCell((int) coords.x, (int) coords.y, new Sand());
     }
 }
