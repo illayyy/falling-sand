@@ -31,8 +31,8 @@ public class Application extends ApplicationAdapter {
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        for (int y = 0; y < WORLD_WIDTH; y++) {
-            for (int x = 0; x < WORLD_HEIGHT; x++) {
+        for (int y = 0; y < WORLD_HEIGHT; y++) {
+            for (int x = 0; x < WORLD_WIDTH; x++) {
                 if (matrix[y][x] == 1) {
                     shapeRenderer.rect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
                 }
