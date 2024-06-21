@@ -3,9 +3,11 @@ package com.github.illayyy;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 public class Application extends ApplicationAdapter {
     private static final int WORLD_WIDTH = 50;
@@ -37,6 +39,7 @@ public class Application extends ApplicationAdapter {
         int[][] matrix = world.getMatrix();
 
         camera.update();
+        ScreenUtils.clear(Color.BLACK);
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
@@ -49,6 +52,7 @@ public class Application extends ApplicationAdapter {
         }
 
         shapeRenderer.end();
+        world.step();
     }
 
     @Override
