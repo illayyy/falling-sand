@@ -5,12 +5,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Application extends ApplicationAdapter {
-    private static final int WORLD_WIDTH = 100;
-    private static final int WORLD_HEIGHT = 100;
-    private static final int VIEWPORT_WIDTH = 300;
-    private static final int VIEWPORT_HEIGHT = 300;
-    private static final float CELL_WIDTH = (float) VIEWPORT_WIDTH / WORLD_WIDTH;
-    private static final float CELL_HEIGHT = (float) VIEWPORT_HEIGHT / WORLD_HEIGHT;
+    private static final int WORLD_WIDTH = 50;
+    private static final int WORLD_HEIGHT = 50;
     private World world;
     private ShapeRenderer shapeRenderer;
     private OrthographicCamera camera;
@@ -20,7 +16,7 @@ public class Application extends ApplicationAdapter {
         world = new World(WORLD_WIDTH, WORLD_HEIGHT);
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
-        camera.setToOrtho(true, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        camera.setToOrtho(true, WORLD_WIDTH, WORLD_HEIGHT);
     }
 
     @Override
@@ -34,7 +30,7 @@ public class Application extends ApplicationAdapter {
         for (int y = 0; y < WORLD_HEIGHT; y++) {
             for (int x = 0; x < WORLD_WIDTH; x++) {
                 if (matrix[y][x] == 1) {
-                    shapeRenderer.rect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+                    shapeRenderer.rect(x, y, 1, 1);
                 }
             }
         }
