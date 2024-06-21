@@ -1,7 +1,8 @@
 package com.github.illayyy;
 
 import com.github.illayyy.material.Air;
-import com.github.illayyy.material.Material;
+import com.github.illayyy.material.Entity;
+import com.github.illayyy.material.PhysicsEntity;
 import com.github.illayyy.material.Solid;
 
 import java.util.Arrays;
@@ -9,14 +10,14 @@ import java.util.Arrays;
 public class World {
     private final int width;
     private final int height;
-    private Material[][] matrix;
+    private Entity[][] matrix;
 
     public World(int width, int height) {
         this.width = width;
         this.height = height;
-        matrix = new Material[height][width];
+        matrix = new Entity[height][width];
 
-        for (Material[] row : matrix) {
+        for (Entity[] row : matrix) {
             Arrays.fill(row, new Air());
         }
     }
@@ -28,7 +29,7 @@ public class World {
     }
 
     public void step() {
-        Material[][] newMatrix = new Material[height][width];
+        Entity[][] newMatrix = new Entity[height][width];
 
         for (int y = 0; y < height; y++) {
             System.arraycopy(matrix[y], 0, newMatrix[y], 0, width);
@@ -38,7 +39,7 @@ public class World {
             for (int x = 0; x < width; x++) {
                 if (y < height - 1) {
                     if (matrix[y][x] instanceof Solid) {
-                        if (!(matrix[y + 1][x] instanceof Solid)) {
+                        if (matrix[y + 1][x] instanceof PhysicsEntity && !(matrix[y + 1][x] instanceof Solid)) {
                             swap(newMatrix, y, x, y + 1, x);
                         }
                     }
@@ -49,13 +50,13 @@ public class World {
         matrix = newMatrix;
     }
 
-    public Material[][] getMatrix() {
+    public Entity[][] getMatrix() {
         return matrix;
     }
 
-    public void setCell(int x, int y, Material material) {
+    public void setCell(int x, int y, Entity entity) {
         if (x < width && y < height && x >= 0 && y >= 0) {
-            matrix[y][x] = material;
+            matrix[y][x] = entity;
         }
     }
 }

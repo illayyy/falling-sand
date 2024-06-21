@@ -1,4 +1,4 @@
 package com.github.illayyy.material;
 
-public interface Gas extends Material {
+public interface Gas extends PhysicsEntity {
 }
