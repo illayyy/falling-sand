@@ -1,8 +1,11 @@
 package com.github.illayyy;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 
 public class Application extends ApplicationAdapter {
     private static final int WORLD_WIDTH = 50;
@@ -17,6 +20,16 @@ public class Application extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(true, WORLD_WIDTH, WORLD_HEIGHT);
+
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean touchDragged(int screenX, int screenY, int pointer) {
+                Vector3 coords = camera.unproject(new Vector3(screenX, screenY, 0));
+                world.setCell((int) coords.x, (int) coords.y, 1);
+
+                return true;
+            }
+        });
     }
 
     @Override
