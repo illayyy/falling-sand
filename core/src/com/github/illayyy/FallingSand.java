@@ -1,31 +1,49 @@
 package com.github.illayyy;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class FallingSand extends ApplicationAdapter {
-    SpriteBatch batch;
-    Texture img;
+    private static final int WORLD_WIDTH = 100;
+    private static final int WORLD_HEIGHT = 100;
+    private static final int VIEWPORT_WIDTH = 300;
+    private static final int VIEWPORT_HEIGHT = 300;
+    private static final float CELL_WIDTH = (float) VIEWPORT_WIDTH / WORLD_WIDTH;
+    private static final float CELL_HEIGHT = (float) VIEWPORT_HEIGHT / WORLD_HEIGHT;
+    private World world;
+    private ShapeRenderer shapeRenderer;
+    private OrthographicCamera camera;
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
-        img = new Texture("badlogic.jpg");
+        world = new World(WORLD_WIDTH, WORLD_HEIGHT);
+        shapeRenderer = new ShapeRenderer();
+        camera = new OrthographicCamera();
+        camera.setToOrtho(true, VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
     }
 
     @Override
     public void render() {
-        ScreenUtils.clear(1, 0, 0, 1);
-        batch.begin();
-        batch.draw(img, 0, 0);
-        batch.end();
+        int[][] matrix = world.getMatrix();
+
+        camera.update();
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
+        for (int y = 0; y < WORLD_WIDTH; y++) {
+            for (int x = 0; x < WORLD_HEIGHT; x++) {
+                if (matrix[y][x] == 1) {
+                    shapeRenderer.rect(x * CELL_WIDTH, y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+                }
+            }
+        }
+
+        shapeRenderer.end();
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
-        img.dispose();
+        shapeRenderer.dispose();
     }
 }
