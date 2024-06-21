@@ -2,12 +2,10 @@ package com.github.illayyy;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.github.illayyy.material.Material;
 import com.github.illayyy.material.Sand;
 
@@ -24,30 +22,24 @@ public class Application extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(true, WORLD_WIDTH, WORLD_HEIGHT);
-
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean touchDragged(int screenX, int screenY, int pointer) {
-                draw(screenX, screenY);
-
-                return true;
-            }
-
-            @Override
-            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                draw(screenX, screenY);
-
-                return true;
-            }
-        });
     }
 
     @Override
     public void render() {
+        input();
+        display();
+        world.step();
+    }
+
+    @Override
+    public void dispose() {
+        shapeRenderer.dispose();
+    }
+
+    private void display() {
         Material[][] matrix = world.getMatrix();
 
         camera.update();
-        ScreenUtils.clear(Color.BLACK);
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
@@ -60,16 +52,12 @@ public class Application extends ApplicationAdapter {
         }
 
         shapeRenderer.end();
-        world.step();
     }
 
-    @Override
-    public void dispose() {
-        shapeRenderer.dispose();
-    }
-
-    private void draw(int x, int y) {
-        Vector3 coords = camera.unproject(new Vector3(x, y, 0));
-        world.setCell((int) coords.x, (int) coords.y, new Sand());
+    private void input() {
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            Vector3 coords = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            world.setCell((int) coords.x, (int) coords.y, new Sand());
+        }
     }
 }
