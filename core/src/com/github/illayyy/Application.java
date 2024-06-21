@@ -4,7 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class FallingSand extends ApplicationAdapter {
+public class Application extends ApplicationAdapter {
     private static final int WORLD_WIDTH = 100;
     private static final int WORLD_HEIGHT = 100;
     private static final int VIEWPORT_WIDTH = 300;
